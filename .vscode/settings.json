@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "ranges": "cpp"
+    },
+    "cmake.configureOnOpen": true
+}

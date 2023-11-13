@@ -1,0 +1,52 @@
+String build_pure_html(void)
+    {
+    Values values;
+    String webpage;
+
+   
+    // Web Page Heading
+
+    // Display temperature and pressure values
+    if (getValuesState=="off")
+        {
+        webpage += "<p>Node information </p>";
+        webpage += "<p><a href=\"/TH/data\"><button class=\"button\">Get data</button></a></p>"; // Next state
+        webpage += "<info>";
+        webpage +=  "Info: ";
+        webpage +=  NODE_ID_STR;
+        webpage += ": ";
+        webpage +=  NODEMCU_STR;
+        webpage += " / ";
+        webpage +=  SENSOR_STR;
+        webpage += "</info>";
+        }
+    else if (getValuesState=="on")
+        {
+        values = read_dht_sensor();
+        webpage += "<p>Measurements </p>";
+        webpage += "<p><a href=\"/TH/info\"><button class=\"button button2\">Get Node info</button></a></p>"; // Next state
+        // Print temperature and humidity values here
+        webpage += "<data>";
+        webpage += "Temperature: ";
+        webpage += (values.temperature);
+        webpage += " C";
+        webpage += "<br/>";
+        webpage += "Humidity: ";
+        webpage += (values.humidity);
+        webpage += " %";
+        webpage += "</data>";
+        }
+    else
+        {
+        webpage += "<p>Unsupported request </p>";
+        webpage += "<p><a href=\"/TH/info\"><button class=\"button button2\">Get Node info</button></a></p>"; // Next state
+        webpage += "<error>";
+        webpage += "Unknown request. ";
+        webpage += "</error>";
+        }
+    
+    webpage += "</body></html>";
+    // The HTTP response ends with another blank line
+    webpage += "";
+    return (webpage);
+    } // build_pure_html
