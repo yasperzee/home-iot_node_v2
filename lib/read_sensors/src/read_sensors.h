@@ -17,11 +17,15 @@
 
 #TODO:
 ------------------------------------------------------------------------------*/
-//#include <Arduino.h>
+#include <Arduino.h>
 #include "setup.h"
+//#include "config.h"
 
 // constants
 const int ERROR_VALUE = -999.99;
+
+#define MAX_ALS 20000
+#define MAX_VCC 5000
 
 #if defined SENSOR_TACOMETER // Tachometer settings
   #define WINGS 1  // PulsesPerRevolution

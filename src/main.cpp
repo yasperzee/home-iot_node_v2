@@ -53,10 +53,10 @@ References:
 #TODO: test OTA
 --------------------------------------------------------------------------------------------*/
 #include "setup.h"
- //#include <Arduino.h>
-#ifdef NODE_MQTT_SERVER
-  #include "node_mqtt_client.h"
-  extern void node_mqtt_client(); // NODE is MQTT CLIENT
+#include <Arduino.h>
+#ifdef NODE_MQTT_CLIENT
+  //#include "mqtt_client.h"
+  //extern void node_mqtt_client(); // NODE is MQTT CLIENT
 #elif defined NODE_HTTP_SERVER
   #include "node_handlers_rest_server.h"
   extern void handle_iot_rest_remote_client(); // NODE is REST SERVER
@@ -80,7 +80,7 @@ void loop() {
 #elif defined NODE_HTTP_CLIENT
   handle_iot_rest_remote_server();
   delay (4000);
-#elif defined NODE_MQTT_SERVER
-node_mqtt_client();
+#elif defined NODE_MQTT_CLIENT
+//node_mqtt_client();
 #endif
   } // loop

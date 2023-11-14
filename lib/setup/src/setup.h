@@ -24,7 +24,7 @@
 // Select node role
   #define NODE_HTTP_SERVER
   //#define NODE_HTTP_CLIENT
-  //#define NODE_MQTT_SERVER
+  //#define NODE_MQTT_CLIENT
   //#define NODE_STANDALONE
 
 // Select Sensor
