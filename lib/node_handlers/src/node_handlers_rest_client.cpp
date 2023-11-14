@@ -9,7 +9,7 @@
  
   #TODO:
 ------------------------------------------------------------------------------*/
-#include "node_handlers_client.h"
+#include "node_handlers_rest_client.h"
 
 #include <Arduino.h>
 

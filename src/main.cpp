@@ -58,11 +58,11 @@ References:
   #include "node_mqtt_client.h"
   extern void node_mqtt_client(); // NODE is MQTT CLIENT
 #elif defined NODE_HTTP_SERVER
-  #include "node_handlers_server.h"
+  #include "node_handlers_rest_server.h"
   extern void handle_iot_rest_remote_client(); // NODE is REST SERVER
 #elif defined NODE_HTTP_CLIENT
   // Then, we need the ESP8266HTTPClient library, which provides the methods to send HTTP requests.
-  #include "node_handlers_client.h"
+  #include "node_handlers_rest_client.h"
   #include <ESP8266HTTPClient.h>
   #include <WiFiClient.h>
   extern void handle_iot_rest_remote_server(); // NODE is REST CLIENT
