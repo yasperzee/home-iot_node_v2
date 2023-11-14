@@ -1,5 +1,5 @@
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef MQTT_CONFIG_H
+#define MQTT_CONFIG_H
 
 /*************************** config.h ******************************************
 
@@ -30,15 +30,12 @@
 
 ------------------------------------------------------------------------------*/
 
-
-
-
 //*********************** Node specific Manual Configurations ******************
 
 // For RELEASE: 15min publish interval & Error traces only, comment 3 following lines.
 #define FIVE_MIN_PUB_CYCL // Effective on RELEASE only e.g any TRACE overrides this
 //#define TRACE_INFO // 36sec public interval & Informational traces
-//#define TRACE_DEBUG // 36sec public interval & Debug traces
+#define TRACE_DEBUG // 36sec public interval & Debug traces
 //#define DEMO // Gives 10sec public interval & 4G-AP(Phone)
 //#define TRACE_ESPINFO // print ESP chip information on boot
 
@@ -63,10 +60,10 @@
     //#define NODE_FEATURE_READ_VCC // ESP12E only. Uses same GPIO as ALS!
 
 // AppSW version. 1.X for nonos/ESP12E(ESP01) and v2.X for esp-idf(FreeRTOS)/esp32
-    #define SW_VERSION "v1.0"
+   // #define SW_VERSION "v1.0"
 
 // Select node-mcu in use
-    #define MCU_ESP01
+  //  #define MCU_ESP01
     //#define MCU_ESP12E
 
 //#ifdef DEMO
@@ -77,11 +74,13 @@
 //#else
     // Select node's Location
     #define LOCATION_NODE "Koti"
+
     // Select mosquitto server
     //#define MQTT_SERVER "192.168.10.61" // Local Rpi3 with mosquitto (Local, WiFi)
-    #define MQTT_SERVER "192.168.10.52" // Local Rpi3 with mosquitto (Local, LAN)
+    //#define MQTT_SERVER "192.168.10.52" // Local Rpi3 with mosquitto (Local, LAN)
     //#define MQTT_SERVER "192.168.10.34" // Local W530 with mosquitto
     //#define MQTT_SERVER "192.168.10.63" // Local NP-510 with mosquitto
+    #define MQTT_SERVER "192.168.0.200" // Local DELL with mosquitto
 
     // Uncomment one for room or define your ownone
     #define TOPIC_ROOM "IceBox"
@@ -141,7 +140,6 @@
 #else
     #define SENSOR_STR "Unknown"
 #endif
-
 #ifndef LOCATION_NODE
     #define LOCATION_NODE "Unknown"
 #endif
@@ -192,13 +190,11 @@ const int RECONNECT_DELAY = 30*second; // Timeout to reconnect mqtt server
 //#define TRACE_DEBUG // 36sec public interval & Debug traces
 #define DEMO // Gives 10sec public interval & 4G-AP(Phone)
 #define TRACE_ESPINFO // print ESP chip information on boot
-//#define TRACE_ESPINFO // print ESP chip information on boot
 
     #define TOPIC_NODEINFO  "NodeInfo"
     #define TOPIC_TOPICINFO "TopicInfo"
     #define TOPIC_WILDCARD_SINGLE "+"
     #define TOPIC_WILDCARD_MULTI  "*"
     #define NODE_ID "NODE-" NODE_NUM
-    //#define ERROR_VALUE -999.9
 
-#endif // CONFIG_H
+#endif // MQTT_CONFIG_H

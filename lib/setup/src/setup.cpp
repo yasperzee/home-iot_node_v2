@@ -32,7 +32,7 @@ int emissivity_eeprom_length = sizeof(emissivity_eeprom_address); // size of dat
 
 void do_setup() {
 
-  Serial.begin(BAUDRATE);
+  //Serial.begin(BAUDRATE);
   EEPROM.begin(EEPROM_SIZE);
   //clear_eeprom(); 
 

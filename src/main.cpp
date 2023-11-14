@@ -30,8 +30,7 @@ References:
   // RPM
     // https://www.circuitschools.com/diy-tachometer-using-arduino-esp8266-esp32-to-measure-accurate-rpm-with-ir-sensor/
 *******************************************************************************/
-/*------------------------------------------------------------------------------
-  Version 1.8     11'22     Yasperzee     Preparing for MQTT client.
+/*------------------------------------------------------------------------------   
   Version 1.7     12'22     Yasperzee     Preparing for REST client.
   Version 1.6     12'22     Yasperzee     Re-factored for REST server.
   Version 1.5     12'22     Yasperzee     Add DHT Sensor support
@@ -54,33 +53,47 @@ References:
 --------------------------------------------------------------------------------------------*/
 #include "setup.h"
 #include <Arduino.h>
-#ifdef NODE_MQTT_CLIENT
-  //#include "mqtt_client.h"
-  //extern void node_mqtt_client(); // NODE is MQTT CLIENT
-#elif defined NODE_HTTP_SERVER
+#ifdef NODE_HTTP_SERVER
   #include "node_handlers_rest_server.h"
   extern void handle_iot_rest_remote_client(); // NODE is REST SERVER
+
 #elif defined NODE_HTTP_CLIENT
   // Then, we need the ESP8266HTTPClient library, which provides the methods to send HTTP requests.
-  #include "node_handlers_rest_client.h"
+  #include "rest_client.h"
   #include <ESP8266HTTPClient.h>
   #include <WiFiClient.h>
-  extern void handle_iot_rest_remote_server(); // NODE is REST CLIENT
+  extern void handle_iot_rest_remote_client(); // NODE is REST CLIENT
+  
+#elif defined NODE_MQTT_CLIENT
+   #include "node_mqtt_client.h"
+   //MqttClient mqttClient;
+
+  // WiFiClient mqtt_client;
+
+   extern void node_mqtt_client(); // NODE is MQTT CLIENT
 #endif
 
 extern void do_setup();
 
+
 void setup() {
+  Serial.begin(BAUDRATE);
   do_setup();
-  } // setup
+  //Serial.println("call: mqttClient.connect_network() ");
+  //mqttClient.connect_network();
+     } // setup
 
 void loop() {     
+  Serial.println("loop: ");
 #ifdef NODE_HTTP_SERVER
   handle_iot_rest_remote_client();
 #elif defined NODE_HTTP_CLIENT
   handle_iot_rest_remote_server();
   delay (4000);
-#elif defined NODE_MQTT_CLIENT
-//node_mqtt_client();
+#elif  defined NODE_MQTT_CLIENT
+
+ node_mqtt_client();
+ delay (5000);
+
 #endif
   } // loop

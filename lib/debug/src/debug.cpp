@@ -47,6 +47,8 @@ void printInfo() {
     Serial.println(HW_VERSION);
     Serial.print("Node_function: ");
     Serial.println(NODE_FUNCTION);
+    Serial.print("Node_protocol: ");
+    Serial.println(NODE_PROTOCOL);
     //Serial.print("Wings is ");
     // Read ppr (PulsesPerRevolution) from EEPROM
     //int wings= eeprom_c.read_eeprom(wings_eeprom_address);

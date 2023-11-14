@@ -24,21 +24,55 @@
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
-// #include <ssid.h>  SSID and PASS strings for local Wlan-network
-#include <mqtt_client.h>
-//#include <config.h>
+#include <node_mqtt_client.h>
+#include <read_sensors.h>
 
 #include <Adafruit_BMP085_U.h>
 #include <Adafruit_BMP280.h>
 #include <Adafruit_BME280.h>
 #include <Adafruit_Sensor.h>
-#include <config.h>
+#include <mqtt_config.h>
 
+//WiFiClient mqtt_client;
 WiFiClient mqtt_client;
+MqttClient mqttClient;
+
 PubSubClient client(mqtt_client);
+
+extern Values values;
+
+extern ReadSensors read_sensors;
+
+void node_mqtt_client()
+{
+ //Serial.println("node_mqtt_client()");  
+
+    if(mqttClient.mqtt_connect())
+        {
+        Serial.println("mqtt_connect FAILED!");
+        //mqttClient.connect_network();
+        }
+    else 
+        {
+        Serial.println("mqtt_connect OK!");
+        
+        values = read_sensors.read_sht3x();
+        mqttClient.mqtt_publish(values);
+        }
+        // mqtt_publish-method publish valid values only
+
+
+
+
+
+
+
+}
 
 void MqttClient::connect_network() // Handled by WifiManager
     {
+        Serial.println("WiFi connected (mqtt)");
+
     /* Explicitly set the ESP8266 to be a WiFi-client, otherwise, it by default,
     would try to act as both a client and an access-point and could cause
     network-issues with your other WiFi-devices on your WiFi-network. */
@@ -57,7 +91,7 @@ void MqttClient::connect_network() // Handled by WifiManager
         Serial.print(".");
         }
     Serial.println("");
-    Serial.println("WiFi connected.");
+    Serial.println("WiFi connected (mqtt)");
     #ifdef TRACE_DEBUG
     Serial.println("IP address: ");
     Serial.println(WiFi.localIP());

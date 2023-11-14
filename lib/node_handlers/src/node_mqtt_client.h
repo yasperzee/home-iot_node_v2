@@ -19,6 +19,8 @@
 
 void callback(char* topic, byte* payload, unsigned int length);
 
+//void node_mqtt_client();
+
 class MqttClient {
    public:
       void connect_network();
