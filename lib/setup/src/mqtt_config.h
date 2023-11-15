@@ -77,10 +77,10 @@
 
     // Select mosquitto server
     //#define MQTT_SERVER "192.168.10.61" // Local Rpi3 with mosquitto (Local, WiFi)
-    //#define MQTT_SERVER "192.168.10.52" // Local Rpi3 with mosquitto (Local, LAN)
+    #define MQTT_SERVER "192.168.0.171" // Local Rpi3 with mosquitto (Local, LAN)
     //#define MQTT_SERVER "192.168.10.34" // Local W530 with mosquitto
     //#define MQTT_SERVER "192.168.10.63" // Local NP-510 with mosquitto
-    #define MQTT_SERVER "192.168.0.200" // Local DELL with mosquitto
+    //#define MQTT_SERVER "192.168.0.200" // Local DELL with mosquitto
 
     // Uncomment one for room or define your ownone
     #define TOPIC_ROOM "IceBox"

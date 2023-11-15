@@ -59,13 +59,7 @@ void node_mqtt_client()
         values = read_sensors.read_sht3x();
         mqttClient.mqtt_publish(values);
         }
-        // mqtt_publish-method publish valid values only
-
-
-
-
-
-
+        // mqtt_publish-method publish valid values onl
 
 }
 
