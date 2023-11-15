@@ -93,7 +93,7 @@ void loop() {
 #elif  defined NODE_MQTT_CLIENT
 
  node_mqtt_client();
- delay (5000);
+ delay (10000);
 
 #endif
   } // loop
