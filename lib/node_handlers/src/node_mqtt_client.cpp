@@ -175,13 +175,13 @@ void MqttClient::mqtt_publish(Values values)
         sprintf(payload, "%s", ""); // Cleans the payload
         // BEST PRACTICE: Do not use leading '/'
         sprintf(topic, "%s/%s/%s", TOPIC_LOCATION, TOPIC_ROOM, TOPIC_TEMP );
-        //sprintf(payload, "{\"Lampotila\": %s}", str_sensor);
-        sprintf(payload, "{\"Lampotilaxxxx\": }");
+        sprintf(payload, "{\"Lampotila\": %s}", str_sensor);
         client.publish(topic, payload);
-        Serial.print("topic: ");
+      /*  Serial.print("topic: ");
         Serial.println(topic);
         Serial.print("payload: ");
         Serial.println(payload);
+        */
         #ifdef TRACE_DEBUG
         Serial.print("Publishing Temperature: ");
         Serial.println(str_sensor);
