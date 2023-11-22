@@ -30,26 +30,13 @@
 
 ------------------------------------------------------------------------------*/
 
-//*********************** Node specific Manual Configurations ******************
 
 // For RELEASE: 15min publish interval & Error traces only, comment 3 following lines.
 #define FIVE_MIN_PUB_CYCL // Effective on RELEASE only e.g any TRACE overrides this
-//#define TRACE_INFO // 36sec public interval & Informational traces
+#define TRACE_INFO // 36sec public interval & Informational traces
 #define TRACE_DEBUG // 36sec public interval & Debug traces
 //#define DEMO // Gives 10sec public interval & 4G-AP(Phone)
 //#define TRACE_ESPINFO // print ESP chip information on boot
-
-// Activate Sleep(s)
-    //#define DEEP_SLEEP
-    //#define LIGHT_SLEEP
-
-// Define number of node, default is "00"
-    #define NODE_NUM "01"
-    //#define NODE_NUM "02"
-    //#define NODE_NUM "03"
-    //#define NODE_NUM "04"
-    //#define NODE_NUM "05"
-
 
 // Select measuremens to publish
     #define NODE_FEATURE_TEMP
@@ -62,29 +49,30 @@
 // AppSW version. 1.X for nonos/ESP12E(ESP01) and v2.X for esp-idf(FreeRTOS)/esp32
    // #define SW_VERSION "v1.0"
 
-// Select node-mcu in use
-  //  #define MCU_ESP01
-    //#define MCU_ESP12E
-
 //#ifdef DEMO
     //#define MQTT_SERVER "192.168.XX.XX" // Phone
     //#define LOCATION_NODE "Demo"
     //#define TOPIC_ROOM "Portable"
     //#define NODE_NUM "00"
 //#else
-    // Select node's Location
-    #define LOCATION_NODE "/Koti"
 
-    // Select mosquitto server
+   
+
+// Select mosquitto server
     //#define MQTT_SERVER "192.168.10.61" // Local Rpi3 with mosquitto (Local, WiFi)
     #define MQTT_SERVER "192.168.0.171" // Local Rpi3 with mosquitto (Local, WiFi)
     //#define MQTT_SERVER "192.168.10.34" // Local W530 with mosquitto
     //#define MQTT_SERVER "192.168.10.63" // Local NP-510 with mosquitto
     //#define MQTT_SERVER "192.168.0.200" // Local DELL with mosquitto
 
-    // Uncomment one for room or define your ownone
-    #define TOPIC_ROOM "IceBox"
-    //#define TOPIC_ROOM "Olohuone"
+
+ // Select node's Location
+    #define LOCATION_NODE "Koti"
+
+
+// Uncomment one for room or define your ownone
+    //#define TOPIC_ROOM "IceBox"
+    #define TOPIC_ROOM "Olohuone"
     //#define TOPIC_ROOM "Ulkoilma"
     //#define TOPIC_ROOM "Keittio"
     //#define TOPIC_ROOM "Parveke"
@@ -106,40 +94,6 @@
 
 //***** Generated definitions **************************************************
 
-#ifdef MCU_ESP01
-    #define MCU_ID "ESP01-" SW_VERSION
-#elif defined MCU_ESP12E
-    #define MCU_ID "ESP12E-" SW_VERSION
-#else
-    #define MCU_ID "Unknown"
-#endif
-
-#ifdef SENSOR_DHT11
-    #define SENSOR_STR "DHT11"
-    #define DHT_TYPE DHT11
-#elif defined SENSOR_DHT22
-    #define SENSOR_STR "DHT22"
-    #define DHT_TYPE DHT22
-#elif defined SENSOR_BMP180
-    #define SENSOR_STR "BMP180"
-    #if defined NODE_FEATURE_AMBIENT_LIGHT
-        #define SENSOR_STR "BMP180+ALS"
-    #endif
-#elif defined SENSOR_BMP280
-    #define SENSOR_STR "BMP280"
-    #ifdef NODE_FEATURE_AMBIENT_LIGHT
-        #define SENSOR_STR "BMP280+ALS"
-    #endif
-#elif defined SENSOR_BME280
-    #define SENSOR_STR "BME280"
-    #ifdef NODE_FEATURE_AMBIENT_LIGHT
-        #define SENSOR_STR "BME280+ALS"
-    #endif
-#elif defined SENSOR_TEMT6000_ALONE
-    #define SENSOR_STR "TEMT6000"
-#else
-    #define SENSOR_STR "Unknown"
-#endif
 #ifndef LOCATION_NODE
     #define LOCATION_NODE "Unknown"
 #endif
@@ -148,9 +102,6 @@
     #define TOPIC_ROOM "Unknown"
 #endif
 
-#ifndef NODE_NUM
-    #define NODE_NUM "00"
-#endif
 
 const int second = 1000;
 const int RECONNECT_DELAY = 30*second; // Timeout to reconnect mqtt server
@@ -195,6 +146,6 @@ const int RECONNECT_DELAY = 30*second; // Timeout to reconnect mqtt server
     #define TOPIC_TOPICINFO "TopicInfo"
     #define TOPIC_WILDCARD_SINGLE "+"
     #define TOPIC_WILDCARD_MULTI  "*"
-    #define NODE_ID "NODE-" NODE_NUM
+  
 
 #endif // MQTT_CONFIG_H

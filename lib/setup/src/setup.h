@@ -18,8 +18,13 @@
   ----------------------------------------------------------------------------*/
   #include <Arduino.h>
 
-//************ Configurations ************
-#define TRACE_INFO
+  //*********************** Node specific Manual Configurations ******************
+
+// Activate Sleep(s)
+    //#define DEEP_SLEEP
+    //#define LIGHT_SLEEP
+
+//#define TRACE_INFO
 
 // Select node role
   //#define NODE_HTTP_SERVER
@@ -61,8 +66,5 @@
 
     // IR Thermometer settings
   #define EMISSIVITY 1.00 
-
-    // Increment number for each node
-  //#define NODE_ID_STR "Node_00001"  // this is obsolete, use ESP.getChipId();
 
 #endif //SETUP_H

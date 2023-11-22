@@ -41,6 +41,8 @@ PubSubClient client(mqtt_client);
 
 extern Values values;
 
+extern u_int32_t ChipNum;
+
 extern ReadSensors read_sensors;
 
 void node_mqtt_client()
@@ -59,7 +61,7 @@ void node_mqtt_client()
         values = read_sensors.read_sht3x();
         mqttClient.mqtt_publish(values);
         }
-        // mqtt_publish-method publish valid values onl
+        // mqtt_publish-method publish valid values only
 
 }
 
@@ -96,7 +98,7 @@ int MqttClient::mqtt_connect()
     {
     client.setServer(MQTT_SERVER, MQTT_PORT);
     client.setCallback(callback);
-    sprintf(MQTT_CLIENT_ID, "%s", MCU_ID);
+    sprintf(MQTT_CLIENT_ID, "%s", NODEMCU_STR);
 
     if (!client.connected())
         {
@@ -141,15 +143,20 @@ int MqttClient::mqtt_connect()
 
 void MqttClient::mqtt_publish(Values values)
     {
+        char temp[30];
     // ************ publish NodeInfo **********************
     sprintf(FAIL_COUNT, "%s", ""); // Clean
     itoa(values.fail_count, FAIL_COUNT, 10);
     // BEST PRACTICE: Do not use leading '/'
-    sprintf(topic, "%s/%s/%s", TOPIC_LOCATION, TOPIC_ROOM, TOPIC_NODEINFO);
-    sprintf(MQTT_DEVICE_LABEL, "%s/%s/%s/%s", MCU_ID, SENSOR_STR, NODE_ID, FAIL_COUNT );
+    sprintf(topic, "/%s/%s/%s", TOPIC_LOCATION, TOPIC_ROOM, TOPIC_NODEINFO);
+
+    sprintf(MQTT_DEVICE_LABEL, "%s / %d", NODEMCU_STR, ChipNum);
+
+    //sprintf(MQTT_DEVICE_LABEL, "{\"ChipNum\": %d}, ChipNum );
     sprintf(payload, "%s", ""); // Cleans the payload
+
     sprintf(payload, "{\"NodeInfo\": %s}", MQTT_DEVICE_LABEL);
-    client.publish(topic, payload);
+    client.publish(topic, payload); 
     #ifdef TRACE_DEBUG
     Serial.print("\nPublishing Nodeinfo:    ");
     Serial.println(payload);
@@ -158,7 +165,7 @@ void MqttClient::mqtt_publish(Values values)
     // ************ publish TopicInfo **********************
     sprintf(payload, "%s", ""); // Cleans the payload
     // BEST PRACTICE: Do not use leading '/'
-    sprintf(topic, "%s/%s/%s", TOPIC_LOCATION, TOPIC_ROOM, TOPIC_TOPICINFO );
+    sprintf(topic, "/%s/%s/%s", TOPIC_LOCATION, TOPIC_ROOM, TOPIC_TOPICINFO );
     sprintf(topic_info, "%s/%s", TOPIC_LOCATION, TOPIC_ROOM );
     sprintf(payload, "{\"TopicInfo\": %s}", topic_info);
     client.publish(topic, payload);
@@ -174,7 +181,7 @@ void MqttClient::mqtt_publish(Values values)
         dtostrf(values.temperature, 7, 1, str_sensor);
         sprintf(payload, "%s", ""); // Cleans the payload
         // BEST PRACTICE: Do not use leading '/'
-        sprintf(topic, "%s/%s/%s", TOPIC_LOCATION, TOPIC_ROOM, TOPIC_TEMP );
+        sprintf(topic, "/%s/%s/%s", TOPIC_LOCATION, TOPIC_ROOM, TOPIC_TEMP );
         sprintf(payload, "{\"Lampotila\": %s}", str_sensor);
         client.publish(topic, payload);
       /*  Serial.print("topic: ");
@@ -248,7 +255,7 @@ void MqttClient::mqtt_publish(Values values)
         dtostrf(values.humidity, 7, 1, str_sensor);
         sprintf(payload, "%s", ""); // Cleans the payload
         // BEST PRACTICE: Do not use leading '/'
-        sprintf(topic, "%s/%s/%s", TOPIC_LOCATION, TOPIC_ROOM, TOPIC_HUMID );
+        sprintf(topic, "/%s/%s/%s", TOPIC_LOCATION, TOPIC_ROOM, TOPIC_HUMID );
         sprintf(payload, "{\"Ilmankosteus\": %s}", str_sensor); // Adds the value
         client.publish(topic, payload);
         #ifdef TRACE_DEBUG

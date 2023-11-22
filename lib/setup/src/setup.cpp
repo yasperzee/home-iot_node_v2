@@ -16,6 +16,8 @@
 #include <WiFiManager.h> 
 #include "read_sensors.h"
 
+u_int32_t ChipNum;
+
 extern void set_callbacks();
 extern void set_emissivity();
 
@@ -45,8 +47,7 @@ void do_setup() {
 #elif defined SENSOR_ULTRASONIC_DISTANCE
   //Do something if any...
 #endif
-  
-  
+
 /*
 Serial.print("reboots_eeprom_address: ");
 Serial.println(reboots_eeprom_address);
@@ -71,6 +72,9 @@ Serial.println(emissivity_eeprom_length);
   WiFi.mode(WIFI_STA); // explicitly set mode, esp defaults to STA+AP
   // it is a good practice to make sure your code sets wifi mode how you want it.
   WiFiManager wifiManager;
+
+  ChipNum = ESP.getChipId(); //returns the ESP8266 chip ID as a 32-bit integer
+  
 
   //reset saved WifiManager settings, for debugging  
   //wifiManager.resetSettings();

@@ -66,10 +66,7 @@ References:
   
 #elif defined NODE_MQTT_CLIENT
    #include "node_mqtt_client.h"
-   //MqttClient mqttClient;
-
-  // WiFiClient mqtt_client;
-
+ 
    extern void node_mqtt_client(); // NODE is MQTT CLIENT
 #endif
 
@@ -79,9 +76,7 @@ extern void do_setup();
 void setup() {
   Serial.begin(BAUDRATE);
   do_setup();
-  //Serial.println("call: mqttClient.connect_network() ");
-  //mqttClient.connect_network();
-     } // setup
+  } // setup
 
 void loop() {     
   Serial.println("loop: ");
@@ -89,9 +84,8 @@ void loop() {
   handle_iot_rest_remote_client();
 #elif defined NODE_HTTP_CLIENT
   handle_iot_rest_remote_server();
-  delay (4000);
+  delay (10000);
 #elif  defined NODE_MQTT_CLIENT
-
  node_mqtt_client();
  delay (10000);
 
