@@ -29,8 +29,8 @@ class MqttClient {
 
    private:
        char FAIL_COUNT[10];
-       char payload[100];
-       char topic[150];
+       char payload[200];
+       char topic[250];
        char topicSubscribe[100];
        // Space to store values to send
        char str_sensor[10];

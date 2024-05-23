@@ -5,6 +5,7 @@
 *******************************************************************************/
 
 /*----------------- Version history --------------------------------------------
+    Version 1.0     Yasperzee   5'23    Json for MQTT and MONGODB support added 
     Version 1.0     Yasperzee   5'19    Explicitly set the ESP8266 to be a WiFi-client.
     Version 0.9     Yasperzee   5'19    Cleaning for Release
     Version 0.8     Yasperzee   5'19    Change SENSOR_FEAT to NODE_FEATURE
@@ -143,7 +144,7 @@ int MqttClient::mqtt_connect()
 
 void MqttClient::mqtt_publish(Values values)
     {
-        char temp[30];
+        //char temp[30];
     // ************ publish NodeInfo **********************
     sprintf(FAIL_COUNT, "%s", ""); // Clean
     itoa(values.fail_count, FAIL_COUNT, 10);
@@ -178,20 +179,24 @@ void MqttClient::mqtt_publish(Values values)
     // ************ publish Temperature **********************
     if (values.temperature != ERROR_VALUE)
         {
-        dtostrf(values.temperature, 7, 1, str_sensor);
+        dtostrf(values.temperature, 4, 1, str_sensor);
         sprintf(payload, "%s", ""); // Cleans the payload
         // BEST PRACTICE: Do not use leading '/'
-        sprintf(topic, "/%s/%s/%s", TOPIC_LOCATION, TOPIC_ROOM, TOPIC_TEMP );
-        sprintf(payload, "{\"Lampotila\": %s}", str_sensor);
+        sprintf(topic, "%s/%s/%s", TOPIC_LOCATION, TOPIC_ROOM, TOPIC_TEMP );
+        sprintf(payload, "%f", values.temperature);
+        //sprintf(payload, str_sensor);
         client.publish(topic, payload);
-      /*  Serial.print("topic: ");
-        Serial.println(topic);
+        
+        /*
+        Serial.print("topic: ");
+        Serial.println(topic);  
         Serial.print("payload: ");
         Serial.println(payload);
         */
         #ifdef TRACE_DEBUG
         Serial.print("Publishing Temperature: ");
         Serial.println(str_sensor);
+        //Serial.println("%f", values.temperature);
         #endif
         }
     #ifdef TRACE_DEBUG
@@ -206,14 +211,14 @@ void MqttClient::mqtt_publish(Values values)
     // ************ publish Barometer **********************
     if (values.pressure != ERROR_VALUE)
         {
-        dtostrf(values.pressure, 7, 1, str_sensor);
+        dtostrf(values.pressure, 6, 1, str_sensor);
         sprintf(payload, "%s", ""); // Cleans the payload
         // BEST PRACTICE: Do not use leading '/'
         sprintf(topic, "%s/%s/%s", TOPIC_LOCATION, TOPIC_ROOM, TOPIC_BARO );
-        sprintf(payload, "{\"Ilmanpaine\": %s}", str_sensor); // Adds the value
+        sprintf(payload, "{%s}", str_sensor); // Adds the value
         client.publish(topic, payload);
         #ifdef TRACE_DEBUG
-        Serial.print("Publishing Barometer  : ");
+        Serial.print("Publishing Barometer  : ");   
         Serial.println(str_sensor);
         #endif
         }
@@ -252,11 +257,11 @@ void MqttClient::mqtt_publish(Values values)
     // ************ publish Humidity **********************
     if (values.humidity != ERROR_VALUE)
         {
-        dtostrf(values.humidity, 7, 1, str_sensor);
+        dtostrf(values.humidity, 4, 1, str_sensor);
         sprintf(payload, "%s", ""); // Cleans the payload
         // BEST PRACTICE: Do not use leading '/'
-        sprintf(topic, "/%s/%s/%s", TOPIC_LOCATION, TOPIC_ROOM, TOPIC_HUMID );
-        sprintf(payload, "{\"Ilmankosteus\": %s}", str_sensor); // Adds the value
+        sprintf(topic, "%s/%s/%s", TOPIC_LOCATION, TOPIC_ROOM, TOPIC_HUMID );
+        sprintf(payload, "%f", values.humidity);
         client.publish(topic, payload);
         #ifdef TRACE_DEBUG
             Serial.print("Publishing Humidity   : ");
