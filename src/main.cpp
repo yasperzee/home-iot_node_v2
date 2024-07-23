@@ -87,7 +87,15 @@ void loop() {
   delay (10000);
 #elif  defined NODE_MQTT_CLIENT
  node_mqtt_client();
- delay (10000);
+#endif
 
+#ifdef DEEP_SLEEP
+  delay (1000); // publish all before sleep
+  // enter deep sleep
+  Serial.print("DeepSleep: ");
+  Serial.println(PUBLISH_INTERVAL/1000); // Seconds
+  ESP.deepSleep(PUBLISH_INTERVAL*1000); //uSeconds); 
+#else
+  delay (PUBLISH_INTERVAL); //mSeconds
 #endif
   } // loop

@@ -5,6 +5,7 @@
 *******************************************************************************/
 
 /*----------------- Version history --------------------------------------------
+    Version 1.1     Yasperzee   7'24    Publish rssi
     Version 1.0     Yasperzee   5'23    Json for MQTT and MONGODB support added 
     Version 1.0     Yasperzee   5'19    Explicitly set the ESP8266 to be a WiFi-client.
     Version 0.9     Yasperzee   5'19    Cleaning for Release
@@ -35,15 +36,15 @@
 #include <mqtt_config.h>
 
 //WiFiClient mqtt_client;
-WiFiClient mqtt_client;
+WiFiClient wifi_client; //mqtt_client;
 MqttClient mqttClient;
 
-PubSubClient client(mqtt_client);
+PubSubClient client(wifi_client);
 
 extern Values values;
 
 extern u_int32_t ChipNum;
-
+extern u_int32_t rssi;
 extern ReadSensors read_sensors;
 
 void node_mqtt_client()
@@ -59,7 +60,14 @@ void node_mqtt_client()
         {
         Serial.println("mqtt_connect OK!");
         
+       
+        #if defined SENSOR_SHT3X
         values = read_sensors.read_sht3x();
+        #endif
+        #if defined SENSOR_BME280
+        values = read_sensors.read_bme280();
+        #endif
+        
         mqttClient.mqtt_publish(values);
         }
         // mqtt_publish-method publish valid values only
@@ -120,7 +128,7 @@ int MqttClient::mqtt_connect()
                 Serial.print("\nMQTT re-connecting ");
                 Serial.println(MQTT_SERVER);
                 #endif
-                delay(RECONNECT_DELAY); // #TODO: Light sleep
+                delay(RECONNECT_DELAY); // #TODO: sleep
                 reconn++;
                 if (client.connect(MQTT_CLIENT_ID))
                     {
@@ -149,14 +157,14 @@ void MqttClient::mqtt_publish(Values values)
     sprintf(FAIL_COUNT, "%s", ""); // Clean
     itoa(values.fail_count, FAIL_COUNT, 10);
     // BEST PRACTICE: Do not use leading '/'
-    sprintf(topic, "/%s/%s/%s", TOPIC_LOCATION, TOPIC_ROOM, TOPIC_NODEINFO);
+    sprintf(topic, "%s/%s/%s", TOPIC_LOCATION, TOPIC_ROOM, TOPIC_NODEINFO);
 
-    sprintf(MQTT_DEVICE_LABEL, "%s / %d", NODEMCU_STR, ChipNum);
+    sprintf(MQTT_DEVICE_LABEL, "%s, %d, %d, %s", NODEMCU_STR, ChipNum, rssi, SENSOR_MODEL_STR);
 
     //sprintf(MQTT_DEVICE_LABEL, "{\"ChipNum\": %d}, ChipNum );
     sprintf(payload, "%s", ""); // Cleans the payload
 
-    sprintf(payload, "{\"NodeInfo\": %s}", MQTT_DEVICE_LABEL);
+    sprintf(payload, "NodeInfo: %s", MQTT_DEVICE_LABEL);
     client.publish(topic, payload); 
     #ifdef TRACE_DEBUG
     Serial.print("\nPublishing Nodeinfo:    ");
@@ -166,9 +174,9 @@ void MqttClient::mqtt_publish(Values values)
     // ************ publish TopicInfo **********************
     sprintf(payload, "%s", ""); // Cleans the payload
     // BEST PRACTICE: Do not use leading '/'
-    sprintf(topic, "/%s/%s/%s", TOPIC_LOCATION, TOPIC_ROOM, TOPIC_TOPICINFO );
+    sprintf(topic, "%s/%s/%s", TOPIC_LOCATION, TOPIC_ROOM, TOPIC_TOPICINFO );
     sprintf(topic_info, "%s/%s", TOPIC_LOCATION, TOPIC_ROOM );
-    sprintf(payload, "{\"TopicInfo\": %s}", topic_info);
+    sprintf(payload, "TopicInfo: %s", topic_info);
     client.publish(topic, payload);
     #ifdef TRACE_DEBUG
     Serial.print("Publishing Topic_info:  ");
@@ -207,52 +215,6 @@ void MqttClient::mqtt_publish(Values values)
     #endif
 #endif
 
-#if defined NODE_FEATURE_BARO
-    // ************ publish Barometer **********************
-    if (values.pressure != ERROR_VALUE)
-        {
-        dtostrf(values.pressure, 6, 1, str_sensor);
-        sprintf(payload, "%s", ""); // Cleans the payload
-        // BEST PRACTICE: Do not use leading '/'
-        sprintf(topic, "%s/%s/%s", TOPIC_LOCATION, TOPIC_ROOM, TOPIC_BARO );
-        sprintf(payload, "{%s}", str_sensor); // Adds the value
-        client.publish(topic, payload);
-        #ifdef TRACE_DEBUG
-        Serial.print("Publishing Barometer  : ");   
-        Serial.println(str_sensor);
-        #endif
-        }
-    #ifdef TRACE_DEBUG
-    else
-        {
-        Serial.println("Barometer   == ERROR_VALUE!");
-        }
-    #endif
-#endif
-
-#ifdef NODE_FEATURE_ALTI
-    // ************ publish Altitude **********************
-    if (values.altitude != ERROR_VALUE)
-        {
-        dtostrf(values.altitude, 7, 1, str_sensor);
-        sprintf(payload, "%s", ""); // Cleans the payload
-        // BEST PRACTICE: Do not use leading '/'
-        sprintf(topic, "%s/%s/%s", TOPIC_LOCATION, TOPIC_ROOM, TOPIC_ALTIT );
-        sprintf(payload, "{\"Korkeus\": %s}", str_sensor);
-        client.publish(topic, payload);
-        #ifdef TRACE_DEBUG
-        Serial.print("Publishing Altitude   : ");
-        Serial.println(str_sensor);
-        #endif
-        }
-    #ifdef TRACE_DEBUG
-    else
-        {
-        Serial.println("Altitude    == ERROR_VALUE!");
-        }
-    #endif
-#endif
-
 #ifdef NODE_FEATURE_HUMID
     // ************ publish Humidity **********************
     if (values.humidity != ERROR_VALUE)
@@ -277,6 +239,57 @@ void MqttClient::mqtt_publish(Values values)
 
 
 #endif
+
+
+#if defined NODE_FEATURE_BARO
+    // ************ publish Barometer **********************
+    if (values.pressure != ERROR_VALUE)
+        {
+        dtostrf(values.pressure, 6, 1, str_sensor);
+        sprintf(payload, "%s", ""); // Cleans the payload
+        // BEST PRACTICE: Do not use leading '/'
+        sprintf(topic, "%s/%s/%s", TOPIC_LOCATION, TOPIC_ROOM, TOPIC_BARO );
+        //sprintf(payload, "{%s}", str_sensor); // Adds the value
+        sprintf(payload, "%f", values.pressure);
+        client.publish(topic, payload);
+        #ifdef TRACE_DEBUG
+        Serial.print("Publishing Barometer  : ");   
+        Serial.println(str_sensor);
+        #endif
+        }
+    #ifdef TRACE_DEBUG
+    else
+        {
+        Serial.println("Barometer   == ERROR_VALUE!");
+        }
+    #endif
+#endif
+
+#ifdef NODE_FEATURE_ALTI
+    // ************ publish Altitude **********************
+    if (values.altitude != ERROR_VALUE)
+        {
+        dtostrf(values.altitude, 4, 1, str_sensor);
+        sprintf(payload, "%s", ""); // Cleans the payload
+        
+        // BEST PRACTICE: Do not use leading '/'
+        sprintf(topic, "%s/%s/%s", TOPIC_LOCATION, TOPIC_ROOM, TOPIC_ALTIT );
+        sprintf(payload, "{\"Korkeus\": %s}", str_sensor);
+        sprintf(payload, "%f", values.altitude);
+        client.publish(topic, payload);
+        #ifdef TRACE_DEBUG
+        Serial.print("Publishing Altitude   : ");
+        Serial.println(str_sensor);
+        #endif
+        }
+    #ifdef TRACE_DEBUG
+    else
+        {
+        Serial.println("Altitude    == ERROR_VALUE!");
+        }
+    #endif
+#endif
+
 
 #ifdef NODE_FEATURE_AMBIENT_LIGHT
     // ************ publish AmbientLight **********************
@@ -304,13 +317,30 @@ void MqttClient::mqtt_publish(Values values)
 
 #ifdef NODE_FEATURE_READ_VCC
     // ************ publish Vcc **********************M
+    
     if (values.vcc_batt > 0 || values.vcc_batt <= MAX_VCC)
         {
-        itoa(values.vcc_batt, str_sensor, 10);
+        //Serial.print("Vcc: ");  
+        //values.vcc_batt =(ESP.getVcc()/1024);
+        //values.vcc_batt =values.vcc_batt/1024.00f;
+        //itoa(values.vcc_batt, str_sensor, 10);
+        //float_t v_cal = ((float)v/1024.0f);
+        //dtostrf(values.vcc_batt, 5, 3, str_sensor);
+        
+
+        // most exact output
+        values.vcc_batt = ESP.getVcc();
+        float_t v_cal = ((float)values.vcc_batt/1024.0f);
+        //char v_str[10];
+        dtostrf(v_cal, 5, 3, str_sensor);
+       // sprintf(v_str,"%s V", v_str);
+       // Serial.println(v_str);
+
         sprintf(payload, "%s", ""); // Cleans the payload
         // BEST PRACTICE: Do not use leading '/'
         sprintf(topic, "%s/%s/%s", TOPIC_LOCATION, TOPIC_ROOM, TOPIC_VCC );
-        sprintf(payload, "{\"Vcc\": %s}", str_sensor);
+        sprintf(payload, "Vcc: %s}", str_sensor);
+        sprintf(payload, "%s", str_sensor);
         client.publish(topic, payload);
         #ifdef TRACE_DEBUG
         Serial.print("Publishing Vcc        : ");

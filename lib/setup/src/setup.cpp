@@ -4,6 +4,7 @@
 
 *******************************************************************************/
 /*------------------------------------------------------------------------------
+  Version 0.3     Yasperzee   06'24         Sleep and re-boot if wifi connection failed  
   Version 0.2     Yasperzee   12'22         Add HC-SRO4 Ultrasonic Distance Sensor     
   Version 0.1     Yasperzee   12'22         Cleaning and refactoring
  
@@ -16,7 +17,14 @@
 #include <WiFiManager.h> 
 #include "read_sensors.h"
 
+extern Values values;
 u_int32_t ChipNum;
+u_int32_t rssi;
+
+#if defined NODE_FEATURE_READ_VCC
+ADC_MODE(ADC_VCC)
+#endif
+
 
 extern void set_callbacks();
 extern void set_emissivity();
@@ -73,7 +81,8 @@ Serial.println(emissivity_eeprom_length);
   // it is a good practice to make sure your code sets wifi mode how you want it.
   WiFiManager wifiManager;
 
-  ChipNum = ESP.getChipId(); //returns the ESP8266 chip ID as a 32-bit integer
+  ChipNum = ESP.getChipId(); 
+  rssi = WiFi.RSSI();//returns the ESP8266 chip ID as a 32-bit integer
   
 
   //reset saved WifiManager settings, for debugging  
@@ -90,7 +99,17 @@ Serial.println(emissivity_eeprom_length);
 
   if(!result) {
     Serial.println("Failed to connect WiFi");
-    // ESP.restart();
+    
+    //Sleep and restart
+    #ifdef DEEP_SLEEP
+    // enter deep sleep
+    Serial.print("DeepSleep: ");
+    Serial.println(PUBLISH_INTERVAL/1000); // Seconds
+    ESP.deepSleep(PUBLISH_INTERVAL*1000); //uSeconds); 
+#else
+  delay (PUBLISH_INTERVAL); //mSeconds
+#endif
+  ESP.restart();
     } 
   else { 
     Serial.println("WiFi connected, IP address: ");

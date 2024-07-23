@@ -54,7 +54,7 @@ struct Values {
     double pressure       = ERROR_VALUE;
     double altitude       = ERROR_VALUE;
     double als            = ERROR_VALUE;
-    double vcc_batt       = ERROR_VALUE;
+    u_int16_t vcc_batt    = ERROR_VALUE;
     double rpm            = ERROR_VALUE;
     int wings             = 1;
     double emissivity     = EMISSIVITY;

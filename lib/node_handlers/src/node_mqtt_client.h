@@ -24,7 +24,7 @@ void callback(char* topic, byte* payload, unsigned int length);
 class MqttClient {
    public:
       void connect_network();
-      int mqtt_connect();
+      int  mqtt_connect();
       void mqtt_publish(Values values);
 
    private:

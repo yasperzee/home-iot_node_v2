@@ -17,14 +17,14 @@
 
   ----------------------------------------------------------------------------*/
   #include <Arduino.h>
-
+  #include <mqtt_config.h>
   //*********************** Node specific Manual Configurations ******************
 
 // Activate Sleep(s)
-    //#define DEEP_SLEEP
+    #define DEEP_SLEEP
     //#define LIGHT_SLEEP
 
-//#define TRACE_INFO
+#define TRACE_INFO
 
 // Select node role
   //#define NODE_HTTP_SERVER
@@ -52,8 +52,29 @@
   #define HW_VERSION "zee_esp_iot_0.1.0_dev"
   #define NODEMCU_STR "ESP-12E" // "ESP-01s"
   #define NODE_FUNCTION "Weather" // e.g. Ultrasonic-distance, Tacometer, IR-Thermometer,  Weather, Environment, Handheld, ...
-  #define SENSOR_MODEL_STR "SHT-31" // e.g. Olimex SNS-IR-3-8
 
+  #if defined SENSOR_TACOMETER
+    #define SENSOR_MODEL_STR "Tacometer"
+  #endif  
+  #if defined SENSOR_IR_THERMOMETER
+    #define SENSOR_MODEL_STR "IrTermometer"
+  #endif
+  #if defined SENSOR_ULTRASONIC_DISTANCE
+    #define SENSOR_MODEL_STR "Ultrasonic" 
+  #endif
+  #if defined(SENSOR_DHT11) || defined(SENSOR_DHT22)
+    #define SENSOR_MODEL_STR "DhtXX"
+  #endif
+  #if defined SENSOR_BMP280
+    #define SENSOR_MODEL_STR "BMP280"
+  #endif
+  #if defined SENSOR_BME280
+    #define SENSOR_MODEL_STR "BME280"
+  #endif
+  #if defined SENSOR_SHT3X
+    #define SENSOR_MODEL_STR  "SHT-31"
+  #endif
+  
   #define BAUDRATE 115200
   #define WIFI_RETRY_TIME 1000
   

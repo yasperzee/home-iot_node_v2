@@ -32,19 +32,19 @@
 
 
 // For RELEASE: 15min publish interval & Error traces only, comment 3 following lines.
-#define FIVE_MIN_PUB_CYCL // Effective on RELEASE only e.g any TRACE overrides this
-#define TRACE_INFO // 36sec public interval & Informational traces
-#define TRACE_DEBUG // 36sec public interval & Debug traces
+// #define FIVE_MIN_PUB_CYCL // Effective on RELEASE only e.g any TRACE overrides this
+// #define TRACE_INFO // 36sec public interval & Informational traces
+// #define TRACE_DEBUG // 36sec public interval & Debug traces
 //#define DEMO // Gives 10sec public interval & 4G-AP(Phone)
 //#define TRACE_ESPINFO // print ESP chip information on boot
 
 // Select measuremens to publish
     #define NODE_FEATURE_TEMP
-    //#define NODE_FEATURE_BARO
-    //#define NODE_FEATURE_ALTI
     #define NODE_FEATURE_HUMID
+    #define NODE_FEATURE_BARO
+    #define NODE_FEATURE_ALTI
     //#define NODE_FEATURE_AMBIENT_LIGHT // ESP12E only. Uses same GPIO as READ_VCC!
-    //#define NODE_FEATURE_READ_VCC // ESP12E only. Uses same GPIO as ALS!
+    #define NODE_FEATURE_READ_VCC // ESP12E only. Uses same GPIO as ALS!
 
 // AppSW version. 1.X for nonos/ESP12E(ESP01) and v2.X for esp-idf(FreeRTOS)/esp32
    // #define SW_VERSION "v1.0"
@@ -72,10 +72,10 @@
 
 // Uncomment one for room or define your ownone
     //#define TOPIC_ROOM "IceBox"
-    #define TOPIC_ROOM "Olohuone"
+    //#define TOPIC_ROOM "Olohuone"
     //#define TOPIC_ROOM "Ulkoilma"
     //#define TOPIC_ROOM "Keittio"
-    //#define TOPIC_ROOM "Parveke"
+    #define TOPIC_ROOM "Parveke"
     //#define TOPIC_ROOM "MH-1"
     //#define TOPIC_ROOM "MH-2"
     //#define TOPIC_ROOM "MH-3"
@@ -88,7 +88,7 @@
     //#define TOPIC_ROOM "Pakastin"
 //#endif
 
-// Select Language
+// //Select Language
     //#define LANGUAGE_FI
     #define LANGUAGE_EN
 
@@ -131,12 +131,12 @@ const int RECONNECT_DELAY = 30*second; // Timeout to reconnect mqtt server
         #define TOPIC_HUMID     "Humidity"
         #define TOPIC_BARO      "Barometer"
         #define TOPIC_ALTIT     "Altitude"
-        #define TOPIC_ALS       "AmbientLight"
+        //#define TOPIC_ALS       "AmbientLight"
         #define TOPIC_VCC       "Vcc"
     #endif//*********************** Node specific Manual Configurations ******************
 
 // For RELEASE: 15min publish interval & Error traces only, comment 3 following lines.
-#define FIVE_MIN_PUB_CYCL // Effective on RELEASE only e.g any TRACE overrides this
+// #define FIVE_MIN_PUB_CYCL // Effective on RELEASE only e.g any TRACE overrides this
 //#define TRACE_INFO // 36sec public interval & Informational traces
 //#define TRACE_DEBUG // 36sec public interval & Debug traces
 #define DEMO // Gives 10sec public interval & 4G-AP(Phone)
