@@ -53,6 +53,10 @@ References:
 --------------------------------------------------------------------------------------------*/
 #include "setup.h"
 #include <Arduino.h>
+
+extern unsigned long startTime;
+extern unsigned long endTime;
+
 #ifdef NODE_HTTP_SERVER
   #include "node_handlers_rest_server.h"
   extern void handle_iot_rest_remote_client(); // NODE is REST SERVER
@@ -91,6 +95,10 @@ void loop() {
 
 #ifdef DEEP_SLEEP
   delay (1000); // publish all before sleep
+   endTime  = millis();
+   unsigned long wakeupTime = endTime - startTime;
+   Serial.print("WakeupTime: ");
+   Serial.println(wakeupTime); // milliSeconds
   // enter deep sleep
   Serial.print("DeepSleep: ");
   Serial.println(PUBLISH_INTERVAL/1000); // Seconds

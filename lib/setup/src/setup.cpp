@@ -20,6 +20,8 @@
 extern Values values;
 u_int32_t ChipNum;
 u_int32_t rssi;
+unsigned long startTime;
+unsigned long endTime;
 
 #if defined NODE_FEATURE_READ_VCC
 ADC_MODE(ADC_VCC)
@@ -42,6 +44,9 @@ int emissivity_eeprom_length = sizeof(emissivity_eeprom_address); // size of dat
 
 void do_setup() {
 
+//Get time in microseconds since boot.
+ //startTime = esp_timer_get_time(void);
+   startTime  = millis();
   //Serial.begin(BAUDRATE);
   EEPROM.begin(EEPROM_SIZE);
   //clear_eeprom(); 
