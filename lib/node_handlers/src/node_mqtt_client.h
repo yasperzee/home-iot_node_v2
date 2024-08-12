@@ -34,7 +34,7 @@ class MqttClient {
        char topicSubscribe[100];
        // Space to store values to send
        char str_sensor[10];
-       char MQTT_DEVICE_LABEL[20];
+       char MQTT_DEVICE_LABEL[30];
        char MQTT_CLIENT_ID[20];
        char topic_info[150];
 };
