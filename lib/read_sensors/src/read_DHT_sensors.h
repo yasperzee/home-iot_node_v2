@@ -11,7 +11,8 @@
 
   -----------------------------------------------------------
 */
-#include <Arduino.h>
+//#include <Arduino.h>
+#include "setup.h"
 #include <config.h>
 #include <read_sensors.h>
 #include <Wire.h>

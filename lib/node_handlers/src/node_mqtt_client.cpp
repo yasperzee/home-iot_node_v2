@@ -23,7 +23,8 @@
 ------------------------------------------------------------------------------*/
 //using namespace std;
 
-#include <Arduino.h>
+//#include <Arduino.h>
+#include "setup.h"
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 #include <node_mqtt_client.h>

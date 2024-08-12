@@ -4,6 +4,7 @@
 
 *******************************************************************************/
 /* -----------------------------------------------------------------------------
+    Version 0.9     Yasperzee   08'24   Migrating from ArduinoJson 6 to 7
     Version 0.8     Yasperzee   12'22   Add SHT3x Sensor support
     Version 0.7     Yasperzee   12'22   Add BMP280 & BME280 Sensors
     Version 0.4     Yasperzee   12'22   Add HC-SRO4 Ultrasonic Distance Sensor 
@@ -13,13 +14,14 @@
 
 #TODO:
 ------------------------------------------------------------------------------*/
-//#include <Arduino.h>
+#include <Arduino.h>
+//#include "setup.h"
 #include "ArduinoJson.h"
 #include "build_json_docs.h"
 #include "eeprom.h"
 #include "read_sensors.h"
 #include "ESP8266WiFi.h"
-#include "setup.h"
+
 
 extern int reboots_eeprom_address; // EEPROM address to save reboots
 extern uint8 wings_eeprom_address;
@@ -40,7 +42,8 @@ ReadSensors read_sensors;
 
 String buildJsonDocs::build_json_getdata_html(void) {
     String webpage;
-    StaticJsonDocument<500> root;
+    //StaticJsonDocument<500> root;
+    JsonDocument root;
 #ifdef SENSOR_TACOMETER
     values = read_sensors.get_rpm();
     root["RPM"] = values.rpm;
@@ -80,7 +83,8 @@ String buildJsonDocs::build_json_getdata_html(void) {
 
 String buildJsonDocs::build_json_getinfo_html(void) {
     String webpage;
-    StaticJsonDocument<500> root;
+    //StaticJsonDocument<500> root;
+    JsonDocument root;
    // DynamicJsonDocument<500> root;
     root["RSSI"] = WiFi.RSSI();
     root["NODE_IP"] = WiFi.localIP();
@@ -98,7 +102,8 @@ String buildJsonDocs::build_json_getinfo_html(void) {
 
 String buildJsonDocs::build_json_getDebug_html(void) {
     String webpage;
-    StaticJsonDocument<500> root;
+    //StaticJsonDocument<500> root;
+    JsonDocument root;
     //DynamicJsonDocument<500> root;
     //root["CORE_VERSION"] = ESP.getCoreVersion();
     //root["SDK_VERSION"] = ESP.getSdkVersion();
@@ -124,7 +129,8 @@ String buildJsonDocs::build_json_getDebug_html(void) {
 
 String buildJsonDocs::build_json_getSettings_html(void) {
     String webpage;
-    StaticJsonDocument<500> root;
+    JsonDocument root;
+    //StaticJsonDocument<500> root;
    // DynamicJsonDocument<500> root;
     //root["Settings"] = "GET n/a yet";
     root["Node function "] = NODE_FUNCTION;
@@ -144,7 +150,7 @@ String buildJsonDocs::build_json_getSettings_html(void) {
 String buildJsonDocs::build_json_putSettings_html(void) {
     String webpage;
     
-    StaticJsonDocument<500> root;
+    JsonDocument root;
    // DynamicJsonDocument<500> root;
     root["Settings"] = " Update settins n/a yet";
     eeprom_c.write_eeprom(reboots_eeprom_address, 0);

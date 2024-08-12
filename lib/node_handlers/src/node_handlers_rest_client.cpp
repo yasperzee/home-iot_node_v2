@@ -11,7 +11,8 @@
 ------------------------------------------------------------------------------*/
 #include "node_handlers_rest_client.h"
 
-#include <Arduino.h>
+//#include <Arduino.h>
+#include "setup.h"
 
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>

@@ -12,7 +12,9 @@
 
 ------------------------------------------------------------------------------*/
 
-#include <Arduino.h>
+//#include <Arduino.h>
+#include "setup.h"
+
 
 String build_light_html(void);
 

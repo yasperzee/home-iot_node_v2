@@ -21,7 +21,7 @@
 #include "eeprom.h"
 #include <EEPROM.h>
 #include "ESP8266WiFi.h"
-#include <Arduino.h>
+//#include <Arduino.h>
 #ifdef SENSOR_IR_THERMOMETER
 #include <Adafruit_MLX90614.h>
 #endif

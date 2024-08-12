@@ -52,7 +52,7 @@ References:
 #TODO: test OTA
 --------------------------------------------------------------------------------------------*/
 #include "setup.h"
-#include <Arduino.h>
+//#include <Arduino.h>
 
 extern unsigned long startTime;
 extern unsigned long endTime;
