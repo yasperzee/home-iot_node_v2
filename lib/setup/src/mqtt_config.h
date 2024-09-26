@@ -72,10 +72,10 @@
 
 // Uncomment one for room or define your ownone
     //#define TOPIC_ROOM "IceBox"
-    //#define TOPIC_ROOM "Olohuone"
+    #define TOPIC_ROOM "Olohuone"
     //#define TOPIC_ROOM "Ulkoilma"
     //#define TOPIC_ROOM "Keittio"
-    #define TOPIC_ROOM "Parveke"
+    //#define TOPIC_ROOM "Parveke"
     //#define TOPIC_ROOM "MH-1"
     //#define TOPIC_ROOM "MH-2"
     //#define TOPIC_ROOM "MH-3"

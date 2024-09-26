@@ -44,7 +44,7 @@ PubSubClient client(wifi_client);
 extern Values values;
 
 extern u_int32_t ChipNum;
-extern u_int32_t rssi;
+extern long rssi;
 extern ReadSensors read_sensors;
 
 void node_mqtt_client()
@@ -158,9 +158,11 @@ void MqttClient::mqtt_publish(Values values)
     itoa(values.fail_count, FAIL_COUNT, 10);
     // BEST PRACTICE: Do not use leading '/'
     sprintf(topic, "%s/%s/%s", TOPIC_LOCATION, TOPIC_ROOM, TOPIC_NODEINFO);
-
-    sprintf(MQTT_DEVICE_LABEL, "%s, %d, %d, %s", NODEMCU_STR, ChipNum, rssi, SENSOR_MODEL_STR);
-
+    long rssi2 = WiFi.RSSI();
+    Serial.print("RSSI2:");
+    Serial.println(rssi2);
+    sprintf(MQTT_DEVICE_LABEL, "%s, %d, %d, %s", NODEMCU_STR, ChipNum, rssi2, SENSOR_MODEL_STR);
+    
     //sprintf(MQTT_DEVICE_LABEL, "{\"ChipNum\": %d}, ChipNum );
     sprintf(payload, "%s", ""); // Cleans the payload
 

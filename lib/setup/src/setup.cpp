@@ -19,7 +19,7 @@
 
 extern Values values;
 u_int32_t ChipNum;
-u_int32_t rssi;
+//long rssi;
 unsigned long startTime;
 unsigned long endTime;
 
@@ -87,7 +87,7 @@ Serial.println(emissivity_eeprom_length);
   WiFiManager wifiManager;
 
   ChipNum = ESP.getChipId(); 
-  rssi = WiFi.RSSI();//returns the ESP8266 chip ID as a 32-bit integer
+  //ssi = WiFi.RSSI();//returns the ESP8266 chip ID as a 32-bit integer
   
 
   //reset saved WifiManager settings, for debugging  
@@ -108,7 +108,7 @@ Serial.println(emissivity_eeprom_length);
     //Sleep and restart
     #ifdef DEEP_SLEEP
     // enter deep sleep
-    Serial.print("DeepSleep: ");
+    Serial.print("DeepSleepX: ");
     Serial.println(PUBLISH_INTERVAL/1000); // Seconds
     ESP.deepSleep(PUBLISH_INTERVAL*1000); //uSeconds); 
 #else
@@ -117,8 +117,13 @@ Serial.println(emissivity_eeprom_length);
   ESP.restart();
     } 
   else { 
-    Serial.println("WiFi connected, IP address: ");
-    Serial.println(WiFi.localIP());
+   // Serial.println("WiFi connected, IP address: ");
+    //Serial.println(WiFi.localIP());
+    Serial.print("Connect time: ");
+    endTime  = millis();
+    unsigned long wakeupTime = endTime - startTime;
+    Serial.println(wakeupTime); // milliSeconds
+    
     }
 
   set_callbacks();

@@ -94,7 +94,7 @@ void loop() {
 #endif
 
 #ifdef DEEP_SLEEP
-  delay (1000); // publish all before sleep
+  delay (100); // publish all before sleep
    endTime  = millis();
    unsigned long wakeupTime = endTime - startTime;
    Serial.print("WakeupTime: ");

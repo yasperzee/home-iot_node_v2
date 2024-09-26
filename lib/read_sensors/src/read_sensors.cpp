@@ -41,6 +41,8 @@
 extern localEeprom  eeprom_c;
 Values values;
 
+ 
+
 #ifdef SENSOR_TACOMETER// RPM stuff
   extern uint8 wings_eeprom_address;
   float rev;
@@ -261,7 +263,8 @@ Values ReadSensors::read_bme280()
     //BME280_ADDRESS_ALTERNATE      (0x76)
 
     //double tmp_value;
-
+    unsigned long measStartTime  = millis();
+    
     Adafruit_BME280 bme280;
     Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
     //Wire.setClock(100000);
@@ -300,6 +303,10 @@ Values ReadSensors::read_bme280()
         Serial.print("BME280: Altitude: ");
         Serial.println(values.altitude);
         #endif
+        unsigned long measEndTime  = millis();
+        unsigned long measTime = measEndTime - measStartTime;
+        Serial.print("measureTime: "); // milliSeconds
+        Serial.println(measTime); // milliSeconds
 
         #ifdef NODE_FEATURE_AMBIENT_LIGHT
             pinMode(ALS_PIN, INPUT);
@@ -322,6 +329,8 @@ Adafruit_SHT31 sht31 = Adafruit_SHT31();
 
 Values ReadSensors::read_sht3x()
 {
+  unsigned long measStartTime  = millis();
+
  if (! sht31.begin(0x44)) {   //Set to 0x45 for alternate i2c addr
     values.temperature  = ERROR_VALUE;
     values.humidity     = ERROR_VALUE;
@@ -335,7 +344,7 @@ else {
   values.humidity = values.humidity / 100; // 2 decimals
 
     if (! isnan(values.temperature)) {  // check if 'is not a number'
-      Serial.print("Temp *C = "); Serial.print(values.temperature); Serial.print("\t\t");
+      Serial.print("Temp *C = "); Serial.print(values.temperature); Serial.print("\n");
       } 
     else { 
       values.temperature  = ERROR_VALUE;
@@ -350,6 +359,12 @@ else {
     Serial.println("Failed to read humidity");
     }
   }
+    unsigned long measEndTime  = millis();
+    unsigned long measTime = measEndTime - measStartTime;
+    Serial.print("measureTime: "); // milliSeconds
+    Serial.print(measTime); // milliSeconds
+    Serial.println(" mS");
+  
     return values;
  }
 #endif

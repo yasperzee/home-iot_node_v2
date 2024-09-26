@@ -19,12 +19,20 @@
   #include <Arduino.h>
   #include <mqtt_config.h>
   //*********************** Node specific Manual Configurations ******************
+// Select Sensor
+  #define SENSOR_BME280
+  //#define SENSOR_BMP280
+  //#define SENSOR_DHT22
+  //#define SENSOR_SHT3X
+  //#define SENSOR_TACOMETER
+  //#define SENSOR_IR_THERMOMETER
+  //#define SENSOR_ULTRASONIC_DISTANCE
 
 // Activate Sleep(s)
-    #define DEEP_SLEEP
+  #define DEEP_SLEEP
     //#define LIGHT_SLEEP
 
-#define TRACE_INFO
+  #define TRACE_INFO
 
 // Select node role
   //#define NODE_HTTP_SERVER
@@ -39,16 +47,9 @@
   #elif defined NODE_MQTT_CLIENT
     #define NODE_PROTOCOL "MQTT_CLIENT"
   #endif
-// Select Sensor
-  //#define SENSOR_BME280
-  //#define SENSOR_BMP280
-  //#define SENSOR_DHT22
-  #define SENSOR_SHT3X
-  //#define SENSOR_TACOMETER
-  //#define SENSOR_IR_THERMOMETER
-  //#define SENSOR_ULTRASONIC_DISTANCE
+
   
-  #define APP_SW_VERSION "zee_esp_iot_0.1.0_dev"
+  #define APP_SW_VERSION "zee_esp_iot_0.2.0_dev"
   #define HW_VERSION "zee_esp_iot_0.1.0_dev"
   #define NODEMCU_STR "ESP-12E" // "ESP-01s"
   #define NODE_FUNCTION "Weather" // e.g. Ultrasonic-distance, Tacometer, IR-Thermometer,  Weather, Environment, Handheld, ...
